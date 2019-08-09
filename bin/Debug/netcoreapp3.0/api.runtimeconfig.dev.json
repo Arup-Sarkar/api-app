@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "/home/magicmind/.dotnet/store/|arch|/|tfm|",
+      "/home/magicmind/.nuget/packages"
+    ]
+  }
+}
