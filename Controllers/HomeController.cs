@@ -47,7 +47,7 @@ namespace api.Controllers
         public int sptest(){
             using(var con=new MySqlConnection(dap.dapperConnection())){
                 DynamicParameters dnp=new DynamicParameters();
-                dnp.Add("gen","female");
+                dnp.Add("gen","male");
                 dnp.Add("@totalemp",dbType: DbType.Int32,direction:ParameterDirection.Output);
                 con.Execute("sptest",dnp,commandType:CommandType.StoredProcedure);
                 int totalcnt = dnp.Get<int>("@totalemp");
