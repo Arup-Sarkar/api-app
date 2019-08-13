@@ -1,3 +1,5 @@
+using System.Data.Common;
+using System.Data;
 using System;
 using MySql.Data;
 using Dapper;
@@ -14,11 +16,12 @@ namespace api.Controllers
     [Route("api/[controller]/[action]")]
     public class HomeController 
     {
-        private readonly string ConnectionString=@"Data Source=139.59.43.76;Initial Catalog=TestDb;user=mahadev;password=mDev@1260!op;";
+        DapperClass dap=new DapperClass();
+       // private readonly string ConnectionString=@"Data Source=139.59.43.76;Initial Catalog=TestDb;user=mahadev;password=mDev@1260!op;";
         [HttpGet]
         public string Getdata(){
             try{
-            using (var con=new MySqlConnection(ConnectionString)){
+            using (var con=new MySqlConnection(dap.dapperConnection())){
                 var res=con.Query("select * from Student_details").ToList();
                 return JsonConvert.SerializeObject(res);
             }
@@ -31,13 +34,24 @@ namespace api.Controllers
         [HttpPost]
         public string InsertStudents(StudentModel stu){
             try{
-                using(var con=new MySqlConnection(ConnectionString)){
+                using(var con=new MySqlConnection(dap.dapperConnection())){
                     con.Query("insert into Student_details values("+stu.Sid+",'"+stu.Name+"','"+stu.Address+"','"+stu.City+"','"+stu.Gen+"')");
                     return "successfuly created";
                 }
             }
             catch(Exception ex){
                 return ex.Message;
+            }
+        }
+        [HttpGet]
+        public int sptest(){
+            using(var con=new MySqlConnection(dap.dapperConnection())){
+                DynamicParameters dnp=new DynamicParameters();
+                dnp.Add("gen","female");
+                dnp.Add("@totalemp",dbType: DbType.Int32,direction:ParameterDirection.Output);
+                con.Execute("sptest",dnp,commandType:CommandType.StoredProcedure);
+                int totalcnt = dnp.Get<int>("@totalemp");
+                return totalcnt;
             }
         }
         
