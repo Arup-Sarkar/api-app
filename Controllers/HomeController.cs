@@ -55,5 +55,22 @@ namespace api.Controllers
             }
         }
         
+        [HttpGet]
+        public string spInsert(){
+            using(var con=new MySqlConnection(dap.dapperConnection())){
+                DynamicParameters dnp=new DynamicParameters();
+                dnp.Add("empid",7);
+                dnp.Add("_name","Arup Sarkar");
+                dnp.Add("gen","male");
+                try{
+                con.Execute("spInsert",dnp,commandType:CommandType.StoredProcedure);
+                return "success !";
+                }
+                catch(Exception ex){
+                    return ex.Message;
+                }
+
+            }
+        }
     }
 }
