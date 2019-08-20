@@ -6,6 +6,8 @@ using Dapper;
 using Newtonsoft.Json;
 using MySql.Data.MySqlClient;
 using System.Linq;
+using api.Models;
+using api.layer;
 namespace api.Controllers
 {
     [ApiController]
@@ -13,6 +15,8 @@ namespace api.Controllers
     public class TestController
     {
         private readonly string constring=@"Data Source=localhost;Initial Catalog=arupdb;user=arup;password=password;";
+        //Bll ob=new Bll();
+        
         [HttpGet]
         public string Testdata(){
             using(var con=new MySqlConnection(constring)){
@@ -20,5 +24,7 @@ namespace api.Controllers
                 return JsonConvert.SerializeObject(data);
             }
         }
+
+        
     }
 }
